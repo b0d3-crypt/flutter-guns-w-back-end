@@ -14,6 +14,8 @@ class ItemsWidget extends StatefulWidget {
 
 class _ItemsWidgetState extends State<ItemsWidget> {
   late List<Gun> guns = [];
+  int itemCountToShow = 4;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -26,6 +28,23 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     final List<dynamic> jsonData = json.decode(data);
     setState(() {
       guns = jsonData.map((json) => Gun.fromJson(json)).toList();
+    });
+  }
+
+  void _loadMoreItems() {
+    setState(() {
+      isLoading = true;
+    });
+
+    Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        if (itemCountToShow + 4 <= guns.length) {
+          itemCountToShow += 4;
+        } else {
+          itemCountToShow = guns.length;
+        }
+        isLoading = false; // Atualizando o estado isLoading após a operação
+      });
     });
   }
 
@@ -44,7 +63,27 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: GunGrid(guns: guns), // Usando o widget GunGrid
+        child: NotificationListener<ScrollNotification>(
+          onNotification: (ScrollNotification scrollInfo) {
+            if (!isLoading &&
+                scrollInfo.metrics.pixels ==
+                    scrollInfo.metrics.maxScrollExtent) {
+              _loadMoreItems();
+            }
+            return true;
+          },
+          child: Stack(
+            children: [
+              GunGrid(
+                guns: guns.take(itemCountToShow).toList(),
+              ),
+              if (isLoading)
+                Center(
+                  child: CircularProgressIndicator(),
+                ),
+            ],
+          ),
+        ),
       ),
     );
   }
