@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "name": "Colt Python",
+        "description": "A Colt Python é um revólver de ação dupla, renomado por sua precisão...",
+        "image": "assets/images/magnum_python.png"
+    },
+    {
+        "id": 2,
+        "name": "Glock 19",
+        "description": "A Glock 19 é uma pistola semiautomática desenvolvida pela fabricante austríaca Glock...",
+        "image": "assets/images/Alfa-Proj-9mm.png"
+    },
+    {
+        "id": 3,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Astra_44.png"
+    },
+    {
+        "id": 4,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Astra_680_-_38.png"
+    },
+    {
+        "id": 5,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Cobra_38spl.png"
+    },
+    {
+        "id": 6,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Astra_680_-_38.png"
+    },
+    {
+        "id": 7,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Astra_680_-_38.png"
+    },
+    {
+        "id": 8,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Astra_680_-_38.png"
+    },
+    {
+        "id": 9,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Astra_680_-_38.png"
+    },
+    {
+        "id": 10,
+        "name": "Smith & Wesson Model 29",
+        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "image": "assets/images/Astra_680_-_38.png"
+    }
+]
