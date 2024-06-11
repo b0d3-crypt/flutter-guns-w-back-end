@@ -43,7 +43,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
         } else {
           itemCountToShow = guns.length;
         }
-        isLoading = false; // Atualizando o estado isLoading após a operação
+        isLoading = false;
       });
     });
   }

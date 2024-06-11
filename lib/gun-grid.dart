@@ -31,7 +31,6 @@ class _GunGridState extends State<GunGrid> {
     setState(() {
       _isLoading = true;
     });
-    // Simulating a delay to fetch more data
     await Future.delayed(Duration(seconds: 2));
     setState(() {
       _isLoading = false;
