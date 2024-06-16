@@ -1,20 +1,36 @@
 import 'package:flutter/material.dart';
 
-class Comments extends StatefulWidget {
-  const Comments({super.key});
+class Comment {
+  final String username;
+  final String text;
+  final DateTime dateTime;
 
+  Comment({
+    required this.username,
+    required this.text,
+    required this.dateTime,
+  });
+}
+
+class Comments extends StatefulWidget {
   @override
   _CommentsState createState() => _CommentsState();
 }
 
 class _CommentsState extends State<Comments> {
   final TextEditingController _controller = TextEditingController();
-  final List<String> _comments = [];
+  final List<Comment> _comments = [];
 
   void _addComment() {
     if (_controller.text.isNotEmpty) {
       setState(() {
-        _comments.insert(0, _controller.text);
+        _comments.add(
+          Comment(
+            username: 'Usuário',
+            text: _controller.text,
+            dateTime: DateTime.now(),
+          ),
+        );
         _controller.clear();
       });
     }
@@ -69,6 +85,8 @@ class _CommentsState extends State<Comments> {
           child: ListView.builder(
             itemCount: _comments.length,
             itemBuilder: (context, index) {
+              final reversedIndex = _comments.length - 1 - index;
+              final comment = _comments[reversedIndex];
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 shape: RoundedRectangleBorder(
@@ -76,7 +94,19 @@ class _CommentsState extends State<Comments> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text(_comments[index]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${comment.username} - ${_formatDateTime(comment.dateTime)}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(comment.text),
+                    ],
+                  ),
                 ),
               );
             },
@@ -84,5 +114,9 @@ class _CommentsState extends State<Comments> {
         ),
       ],
     );
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    return '${dateTime.hour}:${dateTime.minute}, ${dateTime.day}/${dateTime.month}/${dateTime.year}';
   }
 }
