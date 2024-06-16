@@ -17,7 +17,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   late List<Gun> guns = [];
   int itemCountToShow = 4;
   bool isLoading = false;
-  bool isRightArrow = true; // Variável para controlar o estado do ícone
+  bool isRightArrow = true;
 
   @override
   void initState() {
@@ -63,7 +63,6 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     });
   }
 
-  // Método para alternar o ícone
   void _toggleIcon() {
     setState(() {
       isRightArrow = !isRightArrow;
@@ -79,11 +78,9 @@ class _ItemsWidgetState extends State<ItemsWidget> {
         actions: [
           IconButton(
             onPressed: () {
-              _toggleIcon(); // Chama a função para alternar o ícone
+              _toggleIcon();
             },
-            icon: Icon(isRightArrow
-                ? Icons.login
-                : Icons.logout), // Substitui pelos ícones de login e logout
+            icon: Icon(isRightArrow ? Icons.login : Icons.logout),
           ),
         ],
       ),
