@@ -11,6 +11,7 @@ class GunsDetails extends StatefulWidget {
 }
 
 class _GunsDetailsState extends State<GunsDetails> {
+  bool isExpanded = false;
   bool liked = false;
 
   @override
@@ -38,9 +39,8 @@ class _GunsDetailsState extends State<GunsDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Imagem da arma
                 ClipRRect(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -54,6 +54,7 @@ class _GunsDetailsState extends State<GunsDetails> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
                         child: Text(
@@ -63,7 +64,6 @@ class _GunsDetailsState extends State<GunsDetails> {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SizedBox(width: 8),
                       GestureDetector(
                         onTap: () {
                           setState(() {
@@ -81,9 +81,41 @@ class _GunsDetailsState extends State<GunsDetails> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    widget.gun.description,
-                    style: TextStyle(fontSize: 18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        isExpanded
+                            ? widget.gun.description
+                            : (widget.gun.description.length > 100
+                                ? '${widget.gun.description.substring(0, 100)}...'
+                                : widget.gun.description),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                      if (widget.gun.description.length > 100)
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                isExpanded ? 'Menos' : 'Mais',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                              Icon(
+                                isExpanded
+                                    ? Icons.expand_less
+                                    : Icons.expand_more,
+                                color: Colors.blue,
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 16),
