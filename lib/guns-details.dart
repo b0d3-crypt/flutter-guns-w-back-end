@@ -11,21 +11,19 @@ class GunsDetails extends StatefulWidget {
 }
 
 class _GunsDetailsState extends State<GunsDetails> {
-  bool isLiked = false; // Estado para controlar se o item foi curtido
+  bool isLiked = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.gun.name), // Usando o nome da arma como título
-        // Aqui você pode adicionar outros botões de ação, se necessário
+        title: Text(widget.gun.name),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Exibindo imagem da arma
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.asset(
@@ -36,7 +34,6 @@ class _GunsDetailsState extends State<GunsDetails> {
               ),
             ),
             SizedBox(height: 16),
-            // Exibindo nome da arma e ícone de curtir na mesma linha
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -50,19 +47,17 @@ class _GunsDetailsState extends State<GunsDetails> {
                 IconButton(
                   onPressed: () {
                     setState(() {
-                      isLiked = !isLiked; // Alternar o estado de curtida
+                      isLiked = !isLiked;
                     });
                   },
                   icon: Icon(
                     isLiked ? Icons.favorite : Icons.favorite_border,
                     color: Colors.red,
-                    size: 36, // Tamanho do ícone
                   ),
                 ),
               ],
             ),
             SizedBox(height: 8),
-            // Exibindo descrição da arma
             Text(
               widget.gun.description,
               style: TextStyle(fontSize: 18),
