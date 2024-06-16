@@ -12,8 +12,7 @@ class _CommentsState extends State<Comments> {
   void _addComment() {
     if (_controller.text.isNotEmpty) {
       setState(() {
-        _comments.insert(
-            0, _controller.text); // Adiciona o comentário no início da lista
+        _comments.insert(0, _controller.text);
         _controller.clear();
       });
     }
@@ -52,8 +51,7 @@ class _CommentsState extends State<Comments> {
                   onPressed: _addComment,
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor:
-                        Colors.grey.shade800, // Cor do texto branco
+                    backgroundColor: Colors.grey.shade800,
                   ),
                   child: Text('Adicionar Comentário'),
                 ),

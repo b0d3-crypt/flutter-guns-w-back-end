@@ -26,7 +26,6 @@ class _GunsDetailsState extends State<GunsDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Card principal da arma
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Card(
@@ -37,7 +36,6 @@ class _GunsDetailsState extends State<GunsDetails> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    // Imagem da arma
                     ClipRRect(
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
@@ -50,7 +48,6 @@ class _GunsDetailsState extends State<GunsDetails> {
                         height: 200,
                       ),
                     ),
-                    // Nome da arma
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Row(
@@ -79,7 +76,6 @@ class _GunsDetailsState extends State<GunsDetails> {
                         ],
                       ),
                     ),
-                    // Descrição da arma
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
@@ -124,12 +120,10 @@ class _GunsDetailsState extends State<GunsDetails> {
                 ),
               ),
             ),
-            // Card de Comentários
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
-                height:
-                    400, // Defina uma altura fixa para o container de comentários
+                height: 400,
                 child: Comments(),
               ),
             ),
