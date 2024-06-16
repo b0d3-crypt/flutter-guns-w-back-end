@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gun_store/bar-title.dart';
@@ -18,6 +17,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   late List<Gun> guns = [];
   int itemCountToShow = 4;
   bool isLoading = false;
+  bool isRightArrow = true; // Variável para controlar o estado do ícone
 
   @override
   void initState() {
@@ -63,6 +63,13 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     });
   }
 
+  // Método para alternar o ícone
+  void _toggleIcon() {
+    setState(() {
+      isRightArrow = !isRightArrow;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +78,12 @@ class _ItemsWidgetState extends State<ItemsWidget> {
         title: BarTitle(),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(CupertinoIcons.arrow_right_to_line),
+            onPressed: () {
+              _toggleIcon(); // Chama a função para alternar o ícone
+            },
+            icon: Icon(isRightArrow
+                ? Icons.login
+                : Icons.logout), // Substitui pelos ícones de login e logout
           ),
         ],
       ),
