@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Comments extends StatefulWidget {
+  const Comments({super.key});
+
   @override
   _CommentsState createState() => _CommentsState();
 }
@@ -68,7 +70,7 @@ class _CommentsState extends State<Comments> {
             itemCount: _comments.length,
             itemBuilder: (context, index) {
               return Card(
-                margin: EdgeInsets.only(bottom: 8),
+                margin: const EdgeInsets.only(bottom: 8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
