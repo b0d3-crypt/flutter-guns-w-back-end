@@ -1,55 +1,66 @@
 import 'package:flutter/material.dart';
 
-class Comments extends StatelessWidget {
+class Comments extends StatefulWidget {
+  @override
+  _CommentsState createState() => _CommentsState();
+}
+
+class _CommentsState extends State<Comments> {
+  final TextEditingController _controller = TextEditingController();
+  final List<String> _comments = [];
+
+  void _addComment() {
+    if (_controller.text.isNotEmpty) {
+      setState(() {
+        _comments.insert(
+            0, _controller.text); // Adiciona o comentário no início da lista
+        _controller.clear();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          'Comentários',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        elevation: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Comentários',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 16),
-              // Campo para adicionar novos comentários
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Adicione um comentário...',
-                  border: OutlineInputBorder(),
+        SizedBox(height: 16),
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: 'Adicione um comentário...',
+            border: OutlineInputBorder(),
+          ),
+          maxLines: 3,
+        ),
+        SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: _addComment,
+          child: Text('Adicionar Comentário'),
+        ),
+        SizedBox(height: 16),
+        Expanded(
+          child: ListView.builder(
+            itemCount: _comments.length,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: EdgeInsets.only(bottom: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                maxLines: 3,
-              ),
-              SizedBox(height: 16),
-              // Lista de comentários
-              Container(
-                height: 200, // Ajuste a altura conforme necessário
-                child: ListView(
-                  children: [
-                    ListTile(
-                      title: Text('Usuário 1'),
-                      subtitle: Text('Comentário 1'),
-                    ),
-                    ListTile(
-                      title: Text('Usuário 2'),
-                      subtitle: Text('Comentário 2'),
-                    ),
-                    // Adicione mais listTiles conforme necessário para os comentários
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(_comments[index]),
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
-      ),
+      ],
     );
   }
 }
