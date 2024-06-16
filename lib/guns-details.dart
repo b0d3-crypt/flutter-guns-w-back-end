@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gun_store/gun_model.dart';
 
+import 'comments.dart'; // Importe o arquivo de comentários aqui
+
 class GunsDetails extends StatefulWidget {
   final Gun gun;
 
@@ -20,27 +22,19 @@ class _GunsDetailsState extends State<GunsDetails> {
       appBar: AppBar(
         title: Text(widget.gun.name),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          Card(
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 2,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
             ),
+            elevation: 4,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.only(
+                  borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -59,7 +53,7 @@ class _GunsDetailsState extends State<GunsDetails> {
                       Flexible(
                         child: Text(
                           widget.gun.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.bold),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -122,7 +116,8 @@ class _GunsDetailsState extends State<GunsDetails> {
               ],
             ),
           ),
-        ),
+          Comments(),
+        ],
       ),
     );
   }
