@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:gun_store/bar-title.dart';
 import 'package:gun_store/gun-grid.dart';
 import 'package:gun_store/gun_model.dart';
+import 'package:gun_store/guns-details.dart';
 
 class ItemsWidget extends StatefulWidget {
   @override
@@ -33,9 +34,15 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   }
 
   Future<void> _refreshGuns() async {
+    setState(() {
+      isLoading = true;
+    });
+
     await _loadGuns();
+
     setState(() {
       itemCountToShow = 4;
+      isLoading = false;
     });
   }
 
@@ -86,14 +93,23 @@ class _ItemsWidgetState extends State<ItemsWidget> {
               children: [
                 GunGrid(
                   guns: guns.take(itemCountToShow).toList(),
+                  isLoading: isLoading,
+                  onItemClick: (Gun gun) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GunsDetails(gun: gun),
+                      ),
+                    );
+                  },
                 ),
-                if (isLoading)
+                if (isLoading || guns.isEmpty)
                   Center(
                     child: BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                       child: Container(
                         color: Colors.black.withOpacity(0.1),
-                        child: Center(
+                        child: const Center(
                           child: CircularProgressIndicator(),
                         ),
                       ),
