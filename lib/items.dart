@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -87,8 +88,16 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                   guns: guns.take(itemCountToShow).toList(),
                 ),
                 if (isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
+                  Center(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                      child: Container(
+                        color: Colors.black.withOpacity(0.1),
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      ),
+                    ),
                   ),
               ],
             ),
