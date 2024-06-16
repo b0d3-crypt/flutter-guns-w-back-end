@@ -24,7 +24,8 @@ class _CommentsState extends State<Comments> {
   void _addComment() {
     if (_controller.text.isNotEmpty) {
       setState(() {
-        _comments.add(
+        _comments.insert(
+          0,
           Comment(
             username: 'Usuário',
             text: _controller.text,
@@ -85,8 +86,7 @@ class _CommentsState extends State<Comments> {
           child: ListView.builder(
             itemCount: _comments.length,
             itemBuilder: (context, index) {
-              final reversedIndex = _comments.length - 1 - index;
-              final comment = _comments[reversedIndex];
+              final comment = _comments[index];
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 shape: RoundedRectangleBorder(
@@ -97,11 +97,23 @@ class _CommentsState extends State<Comments> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${comment.username} - ${_formatDateTime(comment.dateTime)}',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            comment.username,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            _formatDateTime(comment.dateTime),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 8),
                       Text(comment.text),
