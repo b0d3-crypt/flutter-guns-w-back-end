@@ -23,11 +23,11 @@ class _CommentsState extends State<Comments> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
+        const Text(
           'Comentários',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
@@ -38,28 +38,31 @@ class _CommentsState extends State<Comments> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    hintText: 'Adicione um comentário...',
-                    border: OutlineInputBorder(),
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxHeight: 100),
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: 'Adicione um comentário...',
+                      border: OutlineInputBorder(),
+                    ),
+                    maxLines: null,
                   ),
-                  maxLines: 3,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 ElevatedButton(
                   onPressed: _addComment,
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.grey.shade800,
                   ),
-                  child: Text('Adicionar Comentário'),
+                  child: const Text('Adicionar Comentário'),
                 ),
               ],
             ),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Expanded(
           child: ListView.builder(
             itemCount: _comments.length,
