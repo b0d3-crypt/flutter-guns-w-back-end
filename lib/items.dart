@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gun_store/bar-title.dart';
-import 'package:gun_store/gun-grid.dart'; // Importando o arquivo gun_grid.dart
+import 'package:gun_store/gun-grid.dart';
 import 'package:gun_store/gun_model.dart';
 
 class ItemsWidget extends StatefulWidget {
@@ -28,6 +28,13 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     final List<dynamic> jsonData = json.decode(data);
     setState(() {
       guns = jsonData.map((json) => Gun.fromJson(json)).toList();
+    });
+  }
+
+  Future<void> _refreshGuns() async {
+    await _loadGuns();
+    setState(() {
+      itemCountToShow = 4;
     });
   }
 
@@ -63,25 +70,28 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: NotificationListener<ScrollNotification>(
-          onNotification: (ScrollNotification scrollInfo) {
-            if (!isLoading &&
-                scrollInfo.metrics.pixels ==
-                    scrollInfo.metrics.maxScrollExtent) {
-              _loadMoreItems();
-            }
-            return true;
-          },
-          child: Stack(
-            children: [
-              GunGrid(
-                guns: guns.take(itemCountToShow).toList(),
-              ),
-              if (isLoading)
-                Center(
-                  child: CircularProgressIndicator(),
+        child: RefreshIndicator(
+          onRefresh: _refreshGuns,
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (ScrollNotification scrollInfo) {
+              if (!isLoading &&
+                  scrollInfo.metrics.pixels ==
+                      scrollInfo.metrics.maxScrollExtent) {
+                _loadMoreItems();
+              }
+              return true;
+            },
+            child: Stack(
+              children: [
+                GunGrid(
+                  guns: guns.take(itemCountToShow).toList(),
                 ),
-            ],
+                if (isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
