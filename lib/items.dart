@@ -3,7 +3,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart'; // Adicione esta importação
 import 'package:gun_store/bar-title.dart';
+import 'package:gun_store/google_auth_service.dart'; // Importe o serviço de autenticação do Google
 import 'package:gun_store/gun-grid.dart';
 import 'package:gun_store/gun_model.dart';
 import 'package:gun_store/guns-details.dart';
@@ -63,7 +65,36 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     });
   }
 
-  void _toggleIcon() {
+  Future<void> _toggleIcon() async {
+    if (isRightArrow) {
+      // Faz login com Google
+      final GoogleSignInAccount? googleUser =
+          await GoogleAuthService.signInWithGoogle();
+      if (googleUser != null) {
+        // Login bem-sucedido
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Logged in as ${googleUser.displayName}'),
+          ),
+        );
+      } else {
+        // Login falhou
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to log in'),
+          ),
+        );
+      }
+    } else {
+      // Faz logout do Google
+      GoogleAuthService.signOutGoogle();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Logged out'),
+        ),
+      );
+    }
+
     setState(() {
       isRightArrow = !isRightArrow;
     });
