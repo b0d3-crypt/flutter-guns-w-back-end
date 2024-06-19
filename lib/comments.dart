@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:gun_store/user.dart';
 
 class Comment {
-  final String username;
   final String text;
+  final User user;
   final DateTime dateTime;
 
   Comment({
-    required this.username,
     required this.text,
+    required this.user,
     required this.dateTime,
   });
 }
 
 class Comments extends StatefulWidget {
+  final String? username;
+
+  Comments({this.username});
+
   @override
   _CommentsState createState() => _CommentsState();
 }
@@ -22,13 +27,13 @@ class _CommentsState extends State<Comments> {
   final List<Comment> _comments = [];
 
   void _addComment() {
-    if (_controller.text.isNotEmpty) {
+    if (_controller.text.isNotEmpty && widget.username != null) {
       setState(() {
         _comments.insert(
           0,
           Comment(
-            username: 'Usuário',
             text: _controller.text,
+            user: User(name: widget.username!),
             dateTime: DateTime.now(),
           ),
         );
@@ -47,40 +52,60 @@ class _CommentsState extends State<Comments> {
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
-        Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ConstrainedBox(
-                  constraints: const BoxConstraints(maxHeight: 100),
-                  child: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      hintText: 'Adicione um comentário...',
-                      border: OutlineInputBorder(),
+        if (widget.username != null)
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 100),
+                    child: TextField(
+                      controller: _controller,
+                      decoration: const InputDecoration(
+                        hintText: 'Adicione um comentário...',
+                        border: OutlineInputBorder(),
+                      ),
+                      maxLines: null,
                     ),
-                    maxLines: null,
                   ),
-                ),
-                const SizedBox(height: 8),
-                ElevatedButton(
-                  onPressed: _addComment,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.grey.shade800,
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: _addComment,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.grey.shade800,
+                    ),
+                    child: const Text('Adicionar Comentário'),
                   ),
-                  child: const Text('Adicionar Comentário'),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
+        if (widget.username == null)
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Faça login para adicionar um comentário.',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+          ),
         const SizedBox(height: 16),
         Expanded(
           child: ListView.builder(
@@ -101,7 +126,7 @@ class _CommentsState extends State<Comments> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            comment.username,
+                            comment.user.name,
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
