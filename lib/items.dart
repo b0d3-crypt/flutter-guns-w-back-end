@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gun_store/bar-title.dart';
+import 'package:gun_store/google_auth_service.dart';
 import 'package:gun_store/gun-grid.dart';
 import 'package:gun_store/gun_model.dart';
 import 'package:gun_store/guns-details.dart';
@@ -18,6 +19,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   late List<Gun> guns = [];
   int itemCountToShow = 4;
   bool isLoading = false;
+  bool isRightArrow = true;
+  String? username;
 
   @override
   void initState() {
@@ -63,6 +66,43 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     });
   }
 
+  Future<void> _toggleIcon() async {
+    if (isRightArrow) {
+      final GoogleSignInAccount? googleUser =
+          await GoogleAuthService.signInWithGoogle();
+      if (googleUser != null) {
+        setState(() {
+          username = googleUser.displayName;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Logged in as $username'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to log in'),
+          ),
+        );
+      }
+    } else {
+      await GoogleAuthService.signOutGoogle();
+      setState(() {
+        username = null;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Logged out'),
+        ),
+      );
+    }
+
+    setState(() {
+      isRightArrow = !isRightArrow;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,8 +111,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
         title: BarTitle(),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(CupertinoIcons.arrow_right_to_line),
+            onPressed: _toggleIcon,
+            icon: Icon(isRightArrow ? Icons.login : Icons.logout),
           ),
         ],
       ),
@@ -98,7 +138,10 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => GunsDetails(gun: gun),
+                        builder: (context) => GunsDetails(
+                          gun: gun,
+                          username: username,
+                        ),
                       ),
                     );
                   },

@@ -5,8 +5,9 @@ import 'comments.dart';
 
 class GunsDetails extends StatefulWidget {
   final Gun gun;
+  final String? username;
 
-  GunsDetails({required this.gun});
+  GunsDetails({required this.gun, this.username});
 
   @override
   _GunsDetailsState createState() => _GunsDetailsState();
@@ -61,18 +62,19 @@ class _GunsDetailsState extends State<GunsDetails> {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                liked = !liked;
-                              });
-                            },
-                            child: Icon(
-                              liked ? Icons.favorite : Icons.favorite_border,
-                              color: liked ? Colors.red : null,
-                              size: 32,
+                          if (widget.username != null)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  liked = !liked;
+                                });
+                              },
+                              child: Icon(
+                                liked ? Icons.favorite : Icons.favorite_border,
+                                color: liked ? Colors.red : null,
+                                size: 32,
+                              ),
                             ),
-                          ),
                         ],
                       ),
                     ),
@@ -124,7 +126,7 @@ class _GunsDetailsState extends State<GunsDetails> {
               padding: const EdgeInsets.all(16.0),
               child: Container(
                 height: 400,
-                child: Comments(),
+                child: Comments(username: widget.username),
               ),
             ),
           ],
