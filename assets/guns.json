@@ -2,61 +2,73 @@
     {
         "id": 1,
         "name": "Colt Python",
-        "description": "A Colt Python é um revólver de ação dupla, renomado por sua precisão A Colt Python é um revólver de ação dupla, renomado por sua precisão.A Colt Python é um revólver de ação dupla, renomado por sua precisão.A Colt Python é um revólver de ação dupla, renomado por sua precisão.",
+        "description": "Calibre: .357 Magnum | Capacidade: Geralmente 6 tiros | O Colt Python é conhecido por sua precisão e qualidade de fabricação. Foi muito popular entre policiais e atiradores esportivos. Possui um mecanismo de disparo suave e é reconhecido por seu design robusto e confiável.",
         "image": "assets/images/magnum_python.png"
     },
     {
         "id": 2,
         "name": "Glock 19",
-        "description": "A Glock 19 é uma pistola semiautomática desenvolvida pela fabricante austríaca Glock...",
-        "image": "assets/images/Alfa-Proj-9mm.png"
+        "description": "Calibre: 9mm | Capacidade: Geralmente 15 tiros (varia conforme o modelo e o carregador) | A Glock 19 é uma das pistolas mais populares do mundo, amplamente utilizada por forças policiais e civis. É conhecida por sua confiabilidade, simplicidade de design e facilidade de manutenção. Fabricada em polímero resistente, é leve e confortável de manejar.",
+        "image": "assets/images/glock19.jpg"
     },
     {
         "id": 3,
         "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
-        "image": "assets/images/Astra_44.png"
+        "description": "Calibre: .44 Magnum | Capacidade: Geralmente 6 tiros | O Smith & Wesson Model 29 é famoso por ser o revólver usado por Clint Eastwood no filme: Dirty Harry. É um revólver robusto e poderoso, projetado para o calibre .44 Magnum, conhecido por sua potência de parada e capacidade de disparo. É popular entre entusiastas de armas de fogo e colecionadores.",
+        "image": "assets/images/S&W_Model_29_comparison.jpg"
     },
     {
         "id": 4,
-        "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
-        "image": "assets/images/Astra_680_-_38.png"
-    },
-    {
-        "id": 5,
-        "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "name": "Cobra .38",
+        "description": "Calibre: .38 Special | Capacidade: 5 tiros | A Cobra .38 é um revólver compacto conhecido por sua confiabilidade e tamanho portátil. Calibrado para cartuchos .38 Special, é frequentemente utilizado para defesa pessoal devido ao seu manejo fácil e robustez.",
         "image": "assets/images/Cobra_38spl.png"
     },
     {
-        "id": 6,
-        "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
+        "id": 5,
+        "name": "Astra 680",
+        "description": "Calibre: Disponível em diferentes calibres, como .32 S&W Long e .38 Special | Capacidade: Varia conforme o modelo específico | O Astra 680 é um revólver fabricado pela empresa espanhola Astra-Unceta y Cia SA. Disponível em diferentes calibres, como .32 S&W Long e .38 Special, é valorizado por sua precisão e durabilidade, sendo uma escolha comum entre atiradores esportivos e para defesa pessoal.",
         "image": "assets/images/Astra_680_-_38.png"
+    },
+    {
+        "id": 6,
+        "name": "Astra .44",
+        "description": "Calibre: .44 Magnum | Capacidade: Geralmente 6 tiros | O Astra .44 refere-se a uma linha de revólveres produzidos pela Astra, muitas vezes calibrados para o poderoso cartucho .44 Magnum. Conhecidos por sua potência de fogo e robustez, esses revólveres são usados tanto por civis quanto por profissionais da aplicação da lei.",
+        "image": "assets/images/Astra_44.png"
     },
     {
         "id": 7,
-        "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
-        "image": "assets/images/Astra_680_-_38.png"
+        "name": "Alfa Proj 9mm",
+        "description": "Calibre: 9mm | Capacidade: Varia conforme o modelo específico | O Alfa Proj 9mm é um revólver da marca tcheca Alfa Proj, calibrado para o cartucho 9mm. Conhecido por seu design robusto e confiável, é utilizado em várias aplicações, desde defesa pessoal até competições de tiro esportivo, destacando-se por sua precisão e ergonomia.",
+        "image": "assets/images/Alfa-Proj-9mm.png"
     },
     {
         "id": 8,
-        "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
-        "image": "assets/images/Astra_680_-_38.png"
+        "name": "Armalite AR-7",
+        "description": "Calibre: .22 LR | Capacidade: 8 tiros (carregador) | Rifle semi-automático projetado como uma arma de sobrevivência e pequeno porte. Famoso por sua capacidade de desmontagem e armazenamento dentro da coronha.",
+        "image": "assets/images/AR7rifle.jpg"
     },
     {
         "id": 9,
-        "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
-        "image": "assets/images/Astra_680_-_38.png"
+        "name": "M400 rifle",
+        "description": "Calibre: 5.56x45mm NATO | Capacidade: Varia conforme o carregador utilizado (geralmente entre 20 e 30 tiros) | Rifle de assalto modular usado principalmente por forças militares e policiais. Conhecido por sua precisão e confiabilidade em diversas condições.",
+        "image": "assets/images/M400_rifle.jpg"
     },
     {
         "id": 10,
-        "name": "Smith & Wesson Model 29",
-        "description": "O Smith & Wesson Model 29 é um revólver de calibre .44 Magnum conhecido por ser usado pelo personagem Dirty Harry...",
-        "image": "assets/images/Astra_680_-_38.png"
+        "name": "Simonov SKS-45",
+        "description": "Calibre: 7.62x39mm | Capacidade: 10 tiros (carregador interno) | Carabina de fogo seletivo projetada por Sergei Gavrilovich Simonov. Foi amplamente utilizado pelo Exército Vermelho durante a Segunda Guerra Mundial e por vários países durante a Guerra Fria.",
+        "image": "assets/images/Simonow_SKS_45.jpg"
+    },
+    {
+        "id": 11,
+        "name": "SVT-40",
+        "description": "Calibre: 7.62x54mmR | Capacidade: 10 tiros (carregador destacável) | Fuzil semi-automático soviético desenvolvido durante a Segunda Guerra Mundial. Conhecido por sua precisão e robustez, foi usado extensivamente pelas forças armadas soviéticas.",
+        "image": "assets/images/SVT-40.jpg"
+    },
+    {
+        "id": 12,
+        "name": "Zijiang M99",
+        "description": "Calibre: .50 BMG (12.7x99mm NATO) | Capacidade: 5 tiros (carregador destacável) | Rifle de precisão chinês utilizado principalmente para longo alcance e operações antiveículo. Conhecido por seu poder de fogo e capacidade de penetração.",
+        "image": "assets/images/ZijiangM99.jpg"
     }
 ]
