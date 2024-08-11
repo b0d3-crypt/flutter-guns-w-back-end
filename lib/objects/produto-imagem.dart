@@ -13,7 +13,7 @@ class ProdutoImagem {
 
   factory ProdutoImagem.fromJson(Map<String, dynamic> json) {
     return ProdutoImagem(
-      idProduto: json['idProduto'],
+      idProduto: json['idproduto'],
       nome: json['nome'],
       descricao: json['descricao'],
       imagem: json['imagem'],

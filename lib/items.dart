@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:gun_store/bar-title.dart';
 import 'package:gun_store/google_auth_service.dart';
 import 'package:gun_store/gun-grid.dart';
-import 'package:gun_store/gun_model.dart';
 import 'package:gun_store/guns-details.dart';
+import 'package:gun_store/objects/produto-imagem.dart';
+import 'package:http/http.dart' as http;
 
 class ItemsWidget extends StatefulWidget {
   @override
@@ -16,8 +16,7 @@ class ItemsWidget extends StatefulWidget {
 }
 
 class _ItemsWidgetState extends State<ItemsWidget> {
-  late List<Gun> guns = [];
-  int itemCountToShow = 4;
+  late List<ProdutoImagem> guns = [];
   bool isLoading = false;
   bool isRightArrow = true;
   String? username;
@@ -29,41 +28,49 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   }
 
   Future<void> _loadGuns() async {
-    final String data = await rootBundle.loadString('assets/guns.json');
-    final List<dynamic> jsonData = json.decode(data);
     setState(() {
-      guns = jsonData.map((json) => Gun.fromJson(json)).toList();
+      isLoading = true;
     });
+
+    try {
+      final response =
+          await http.get(Uri.parse('http://localhost:3000/produtos'));
+      if (response.statusCode == 200) {
+        print('Response body: ${response.body}');
+
+        final List<dynamic> jsonData = json.decode(response.body);
+        if (jsonData is List) {
+          List<ProdutoImagem> loadedGuns = [];
+          for (var item in jsonData) {
+            print('Response body: ${item}');
+            try {
+              loadedGuns.add(ProdutoImagem.fromJson(item));
+            } catch (e) {
+              print('Error parsing item: $e');
+              print('Failed item: $item');
+            }
+          }
+
+          setState(() {
+            guns = loadedGuns;
+          });
+        } else {
+          print('Error: JSON data is not a list');
+        }
+      } else {
+        print('Failed to load guns with status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error during request: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> _refreshGuns() async {
-    setState(() {
-      isLoading = true;
-    });
-
     await _loadGuns();
-
-    setState(() {
-      itemCountToShow = 4;
-      isLoading = false;
-    });
-  }
-
-  void _loadMoreItems() {
-    setState(() {
-      isLoading = true;
-    });
-
-    Future.delayed(Duration(seconds: 2), () {
-      setState(() {
-        if (itemCountToShow + 4 <= guns.length) {
-          itemCountToShow += 4;
-        } else {
-          itemCountToShow = guns.length;
-        }
-        isLoading = false;
-      });
-    });
   }
 
   Future<void> _toggleIcon() async {
@@ -120,46 +127,40 @@ class _ItemsWidgetState extends State<ItemsWidget> {
         padding: const EdgeInsets.all(16.0),
         child: RefreshIndicator(
           onRefresh: _refreshGuns,
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (ScrollNotification scrollInfo) {
-              if (!isLoading &&
-                  scrollInfo.metrics.pixels ==
-                      scrollInfo.metrics.maxScrollExtent) {
-                _loadMoreItems();
-              }
-              return true;
-            },
-            child: Stack(
-              children: [
-                GunGrid(
-                  guns: guns.take(itemCountToShow).toList(),
-                  isLoading: isLoading,
-                  onItemClick: (Gun gun) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GunsDetails(
-                          gun: gun,
-                          username: username,
-                        ),
+          child: Stack(
+            children: [
+              guns.isNotEmpty
+                  ? GunGrid(
+                      guns: guns,
+                      onItemClick: (ProdutoImagem gun) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                GunsDetails(cdProduto: gun.idProduto),
+                          ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                        'No guns available',
+                        style: TextStyle(fontSize: 18, color: Colors.grey),
                       ),
-                    );
-                  },
-                ),
-                if (isLoading || guns.isEmpty)
-                  Center(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                      child: Container(
-                        color: Colors.black.withOpacity(0.1),
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                    ),
+              if (isLoading)
+                Center(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    child: Container(
+                      color: Colors.black.withOpacity(0.1),
+                      child: const Center(
+                        child: CircularProgressIndicator(),
                       ),
                     ),
                   ),
-              ],
-            ),
+                ),
+            ],
           ),
         ),
       ),
