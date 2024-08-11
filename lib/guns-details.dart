@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gun_store/objects/comentario-protudo-response.dart';
 import 'package:gun_store/objects/details-gun.dart';
+import 'package:gun_store/objects/produto-like.dart';
 import 'package:gun_store/objects/usuario-dto.dart';
 import 'package:http/http.dart' as http;
 
@@ -76,8 +77,50 @@ class _GunsDetailsState extends State<GunsDetails> {
     return details;
   }
 
+  sendLike(bool liked) async {
+    if (liked) {
+      try {
+        final response = await http.put(
+          Uri.parse('http://localhost:3000/produto-like'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(
+              ProdutoLike(idProduto: widget.cdProduto, nrLike: gun.nrLike + 1)),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao curtir.'),
+          ),
+        );
+      }
+    }
+    if (!liked) {
+      try {
+        final response = await http.put(
+          Uri.parse('http://localhost:3000/produto-like'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(
+              ProdutoLike(idProduto: widget.cdProduto, nrLike: gun.nrLike - 1)),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao descurtir.'),
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (gun.nrLike > 0) {
+      liked = true;
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(gun?.nmProduto ?? 'Loading...'),
@@ -125,19 +168,35 @@ class _GunsDetailsState extends State<GunsDetails> {
                                   ),
                                 ),
                                 if (widget.usuarioDTO.idUsuario > 0)
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        liked = !liked;
-                                      });
-                                    },
-                                    child: Icon(
-                                      liked
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: liked ? Colors.red : null,
-                                      size: 32,
-                                    ),
+                                  Row(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            liked = !liked;
+                                            if (liked) {
+                                              gun.nrLike++;
+                                            } else {
+                                              gun.nrLike--;
+                                            }
+                                          });
+                                          sendLike(liked);
+                                        },
+                                        child: Icon(
+                                          Icons.favorite,
+                                          color: Colors.red, // Sempre vermelho
+                                          size: 32,
+                                        ),
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        '${gun.nrLike}', // Exibe a quantidade de likes
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                               ],
                             ),
