@@ -21,6 +21,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   bool isLoading = false;
   bool isRightArrow = true;
   String? username;
+  UsuarioDTO? usuarioDTO;
 
   @override
   void initState() {
@@ -99,7 +100,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
           final Map<String, dynamic> responseData = json.decode(response.body);
 
           UsuarioDTO usuarioRecebido = parseUsuarioDTO(responseData);
-          this.username = usuarioRecebido.nome;
+          usuarioDTO = usuarioRecebido;
+          username = usuarioRecebido.nome;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -127,6 +129,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       await GoogleAuthService.signOutGoogle();
       setState(() {
         username = null;
+        usuarioDTO = null;
       });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
