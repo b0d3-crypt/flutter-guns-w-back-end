@@ -3,14 +3,16 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gun_store/objects/comentario-protudo-response.dart';
 import 'package:gun_store/objects/details-gun.dart';
+import 'package:gun_store/objects/usuario-dto.dart';
 import 'package:http/http.dart' as http;
 
 import 'comments.dart';
 
 class GunsDetails extends StatefulWidget {
   final int cdProduto;
+  final UsuarioDTO usuarioDTO;
 
-  GunsDetails({required this.cdProduto});
+  GunsDetails({required this.cdProduto, required this.usuarioDTO});
 
   @override
   _GunsDetailsState createState() => _GunsDetailsState();
@@ -122,20 +124,22 @@ class _GunsDetailsState extends State<GunsDetails> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      liked = !liked;
-                                    });
-                                  },
-                                  child: Icon(
-                                    liked
-                                        ? Icons.favorite
-                                        : Icons.favorite_border,
-                                    color: liked ? Colors.red : null,
-                                    size: 32,
+                                // Verifique se o usuário está logado antes de exibir o ícone de "like"
+                                if (widget.usuarioDTO.idUsuario > 0)
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        liked = !liked;
+                                      });
+                                    },
+                                    child: Icon(
+                                      liked
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: liked ? Colors.red : null,
+                                      size: 32,
+                                    ),
                                   ),
-                                ),
                               ],
                             ),
                           ),
@@ -188,7 +192,10 @@ class _GunsDetailsState extends State<GunsDetails> {
                     padding: const EdgeInsets.all(16.0),
                     child: Container(
                       height: 400,
-                      child: Comments(username: null),
+                      child: Comments(
+                        username:
+                            widget.usuarioDTO?.nome, // Passa o nome do usuário
+                      ),
                     ),
                   ),
                 ],

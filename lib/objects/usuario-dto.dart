@@ -15,6 +15,14 @@ class UsuarioDTO {
     required this.password,
   });
 
+  UsuarioDTO.empty()
+      : idPessoa = 0,
+        idUsuario = 0,
+        nome = '',
+        nick = '',
+        email = '',
+        password = '';
+
   factory UsuarioDTO.fromJson(Map<String, dynamic> json) {
     return UsuarioDTO(
       idPessoa: json['idPessoa'],
