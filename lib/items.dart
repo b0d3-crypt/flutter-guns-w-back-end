@@ -8,6 +8,7 @@ import 'package:gun_store/google_auth_service.dart';
 import 'package:gun_store/gun-grid.dart';
 import 'package:gun_store/guns-details.dart';
 import 'package:gun_store/objects/produto-imagem.dart';
+import 'package:gun_store/objects/usuario-dto.dart';
 import 'package:http/http.dart' as http;
 
 class ItemsWidget extends StatefulWidget {
@@ -78,12 +79,41 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       final GoogleSignInAccount? googleUser =
           await GoogleAuthService.signInWithGoogle();
       if (googleUser != null) {
+        UsuarioDTO usuario = UsuarioDTO(
+          idPessoa: 0,
+          idUsuario: 0,
+          nome: googleUser.displayName ?? '',
+          nick: '',
+          email: googleUser.email,
+          password: '',
+        );
+        final response = await http.post(
+          Uri.parse('http://localhost:3000/user/user'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(usuario.toJson()),
+        );
+
+        if (response.statusCode == 201) {
+          final Map<String, dynamic> responseData = json.decode(response.body);
+
+          UsuarioDTO usuarioRecebido = parseUsuarioDTO(responseData);
+          this.username = usuarioRecebido.nome;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to send user data'),
+            ),
+          );
+        }
+
         setState(() {
           username = googleUser.displayName;
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Logged in as $username'),
+            content: Text('Usuário ${username} logado com sucesso.'),
           ),
         );
       } else {
@@ -108,6 +138,20 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     setState(() {
       isRightArrow = !isRightArrow;
     });
+  }
+
+  UsuarioDTO parseUsuarioDTO(Map<String, dynamic> jsonData) {
+    if (jsonData.isEmpty) {
+      throw Exception("A lista de dados JSON está vazia.");
+    }
+    UsuarioDTO usuario = UsuarioDTO(
+        idPessoa: jsonData['id'],
+        idUsuario: jsonData['pessoa']['id'],
+        nome: jsonData['pessoa']['nome'],
+        nick: jsonData['nick'],
+        email: jsonData['pessoa']['email'],
+        password: jsonData['password']);
+    return usuario;
   }
 
   @override
