@@ -19,7 +19,7 @@ class GunsDetails extends StatefulWidget {
 }
 
 class _GunsDetailsState extends State<GunsDetails> {
-  DetailsGuns? gun;
+  DetailsGuns gun = DetailsGuns.empty();
   bool isLoading = true;
   bool isExpanded = false;
   bool liked = false;
@@ -70,7 +70,7 @@ class _GunsDetailsState extends State<GunsDetails> {
           email: item['email'] ?? '');
       comentariosList.add(comentario);
     }
-    if (comentariosList.length > 1 && comentariosList[0].comentario != '') {
+    if (comentariosList.length > 0 && comentariosList[0].comentario != '') {
       details.comentarioProdutoResponse = comentariosList;
     }
     return details;
@@ -124,7 +124,6 @@ class _GunsDetailsState extends State<GunsDetails> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
-                                // Verifique se o usuário está logado antes de exibir o ícone de "like"
                                 if (widget.usuarioDTO.idUsuario > 0)
                                   GestureDetector(
                                     onTap: () {
@@ -193,8 +192,9 @@ class _GunsDetailsState extends State<GunsDetails> {
                     child: Container(
                       height: 400,
                       child: Comments(
-                        username:
-                            widget.usuarioDTO?.nome, // Passa o nome do usuário
+                        usuarioDTO: widget.usuarioDTO,
+                        idProduto: widget.cdProduto,
+                        detailsGuns: gun,
                       ),
                     ),
                   ),
