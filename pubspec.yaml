@@ -24,20 +24,6 @@ dev_dependencies:
   flutter_lints: ^3.0.0
 
 flutter:
-  assets:
-    - assets/guns.json
-    - assets/images/magnum_python.png
-    - assets/images/Alfa-Proj-9mm.png
-    - assets/images/Astra_44.png
-    - assets/images/Astra_680_-_38.png
-    - assets/images/Cobra_38spl.png
-    - assets/images/S&W_Model_29_comparison.jpg
-    - assets/images/glock19.jpg
-    - assets/images/SVT-40.jpg
-    - assets/images/Simonow_SKS_45.jpg
-    - assets/images/M400_rifle.jpg
-    - assets/images/AR7rifle.jpg
-    - assets/images/ZijiangM99.jpg
   
   uses-material-design: true
 

@@ -22,6 +22,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   bool isRightArrow = true;
   String? username;
   late UsuarioDTO usuarioDTO = UsuarioDTO.empty();
+  int offset = 0;
+  int limit = 4;
 
   @override
   void initState() {
@@ -35,8 +37,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
     });
 
     try {
-      final response =
-          await http.get(Uri.parse('http://localhost:3000/produtos'));
+      final response = await http
+          .get(Uri.parse('http://localhost:3000/produtos/${offset}/${limit}'));
       if (response.statusCode == 200) {
         print('Response body: ${response.body}');
 
@@ -54,7 +56,10 @@ class _ItemsWidgetState extends State<ItemsWidget> {
           }
 
           setState(() {
-            guns = loadedGuns;
+            offset += limit;
+            for (var gun in loadedGuns) {
+              guns.add(gun);
+            }
           });
         } else {
           print('Error: JSON data is not a list');
