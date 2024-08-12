@@ -148,8 +148,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       throw Exception("A lista de dados JSON está vazia.");
     }
     UsuarioDTO usuario = UsuarioDTO(
-        idPessoa: jsonData['id'],
-        idUsuario: jsonData['pessoa']['id'],
+        idUsuario: jsonData['id'],
+        idPessoa: jsonData['pessoa']['id'],
         nome: jsonData['pessoa']['nome'],
         nick: jsonData['nick'],
         email: jsonData['pessoa']['email'],

@@ -116,11 +116,23 @@ class _GunsDetailsState extends State<GunsDetails> {
     }
   }
 
+  buscarLike() async {
+    try {
+      final response = await http.get(Uri.parse(
+          'http://localhost:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}'));
+      liked = response.body != "" ? true : false;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao curtir.'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (gun.nrLike > 0) {
-      liked = true;
-    }
+    buscarLike();
     return Scaffold(
       appBar: AppBar(
         title: Text(gun?.nmProduto ?? 'Loading...'),
