@@ -5,6 +5,7 @@ import 'package:gun_store/objects/comentario-protudo-response.dart';
 import 'package:gun_store/objects/details-gun.dart';
 import 'package:gun_store/objects/produto-like.dart';
 import 'package:gun_store/objects/usuario-dto.dart';
+import 'package:gun_store/objects/usuario-like.dart';
 import 'package:http/http.dart' as http;
 
 import 'comments.dart';
@@ -32,6 +33,7 @@ class _GunsDetailsState extends State<GunsDetails> {
   }
 
   Future<void> _fetchGunDetails() async {
+    _checkIfLiked();
     final url = 'http://localhost:3000/produtos/${widget.cdProduto}';
     try {
       final response = await http.get(Uri.parse(url));
@@ -54,9 +56,6 @@ class _GunsDetailsState extends State<GunsDetails> {
   }
 
   DetailsGuns parseDetailsGuns(List<dynamic> jsonData) {
-    if (jsonData.isEmpty) {
-      throw Exception("A lista de dados JSON está vazia.");
-    }
     DetailsGuns details = DetailsGuns.empty();
     details.idProduto = jsonData[0]['idproduto'];
     details.nmProduto = jsonData[0]['nmproduto'];
@@ -66,65 +65,78 @@ class _GunsDetailsState extends State<GunsDetails> {
     var comentariosList = <ComentarioProdutoResponse>[];
     for (var item in jsonData) {
       ComentarioProdutoResponse comentario = ComentarioProdutoResponse(
-          comentario: item['comentario'] ?? '',
-          nick: item['nick'] ?? '',
-          email: item['email'] ?? '');
+        comentario: item['comentario'] ?? '',
+        nick: item['nick'] ?? '',
+        email: item['email'] ?? '',
+      );
       comentariosList.add(comentario);
     }
-    if (comentariosList.length > 0 && comentariosList[0].comentario != '') {
-      details.comentarioProdutoResponse = comentariosList;
-    }
+    details.comentarioProdutoResponse = comentariosList;
     return details;
   }
 
   sendLike(bool liked) async {
-    if (liked) {
-      try {
-        final response = await http.put(
-          Uri.parse('http://localhost:3000/produto-like'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(
-              ProdutoLike(idProduto: widget.cdProduto, nrLike: gun.nrLike + 1)),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erro ao curtir.'),
-          ),
-        );
-      }
-    }
-    if (!liked) {
-      try {
-        final response = await http.put(
-          Uri.parse('http://localhost:3000/produto-like'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(
-              ProdutoLike(idProduto: widget.cdProduto, nrLike: gun.nrLike - 1)),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Erro ao descurtir.'),
-          ),
-        );
-      }
-    }
-  }
-
-  buscarLike() async {
     try {
-      final response = await http.get(Uri.parse(
-          'http://localhost:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}'));
-      liked = response.body != "" ? true : false;
+      final response = await http.put(
+        Uri.parse('http://localhost:3000/produto-like'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+          ProdutoLike(
+            produto_id: widget.cdProduto,
+            nrLike: liked ? gun.nrLike + 1 : gun.nrLike - 1,
+          ),
+        ),
+      );
+      if (liked) {
+        final response = await http.post(
+          Uri.parse('http://localhost:3000/usuario-like'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(UsuarioLike(
+              produtoId: gun.idProduto,
+              usuarioId: widget.usuarioDTO.idUsuario)),
+        );
+      } else {
+        final response = await http.delete(Uri.parse(
+            'http://localhost:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}'));
+      }
+      if (response.statusCode == 200) {
+        setState(() {
+          gun.nrLike = liked ? gun.nrLike + 1 : gun.nrLike - 1;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erro ao atualizar a curtida.'),
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Erro ao curtir.'),
+          content: Text('Erro ao atualizar a curtida.'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _checkIfLiked() async {
+    try {
+      final response = await http.get(Uri.parse(
+        'http://localhost:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}',
+      ));
+      if (response.statusCode == 200) {
+        setState(() {
+          liked = response.body.isNotEmpty;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erro ao verificar curtida.'),
         ),
       );
     }
@@ -132,7 +144,6 @@ class _GunsDetailsState extends State<GunsDetails> {
 
   @override
   Widget build(BuildContext context) {
-    buscarLike();
     return Scaffold(
       appBar: AppBar(
         title: Text(gun?.nmProduto ?? 'Loading...'),
@@ -174,8 +185,9 @@ class _GunsDetailsState extends State<GunsDetails> {
                                   child: Text(
                                     gun!.nmProduto,
                                     style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -186,23 +198,21 @@ class _GunsDetailsState extends State<GunsDetails> {
                                         onTap: () {
                                           setState(() {
                                             liked = !liked;
-                                            if (liked) {
-                                              gun.nrLike++;
-                                            } else {
-                                              gun.nrLike--;
-                                            }
                                           });
                                           sendLike(liked);
                                         },
                                         child: Icon(
-                                          Icons.favorite,
-                                          color: Colors.red, // Sempre vermelho
+                                          liked
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color:
+                                              liked ? Colors.red : Colors.grey,
                                           size: 32,
                                         ),
                                       ),
                                       SizedBox(width: 8),
                                       Text(
-                                        '${gun.nrLike}', // Exibe a quantidade de likes
+                                        '${gun.nrLike}',
                                         style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,

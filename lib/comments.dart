@@ -106,8 +106,8 @@ class _CommentsState extends State<Comments> {
                   .comentario !=
               _comments[length - 1].text) {
         for (var comentario in widget.detailsGuns.comentarioProdutoResponse) {
-          Comentario coment = Comentario(
-              text: comentario.comentario, user: widget.usuarioDTO.nome);
+          Comentario coment =
+              Comentario(text: comentario.comentario, user: comentario.nick);
           this._comments.add(coment);
         }
       }
