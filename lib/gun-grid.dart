@@ -4,15 +4,18 @@ import 'package:gun_store/objects/produto-imagem.dart';
 class GunGrid extends StatelessWidget {
   final List<ProdutoImagem> guns;
   final void Function(ProdutoImagem gun) onItemClick;
+  final ScrollController scrollController;
 
   GunGrid({
     required this.guns,
     required this.onItemClick,
+    required this.scrollController, // Adicionado o ScrollController
   });
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      controller: scrollController, // Adicionado o controller
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16,
@@ -58,17 +61,13 @@ class GunGrid extends StatelessWidget {
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(
                     gun.descricao,
-                    style: TextStyle(fontSize: 15),
-                    maxLines: 3,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

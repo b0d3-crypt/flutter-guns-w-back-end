@@ -24,11 +24,29 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   late UsuarioDTO usuarioDTO = UsuarioDTO.empty();
   int offset = 0;
   int limit = 4;
+  late ScrollController _scrollController;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     _loadGuns();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      if (!isLoading) {
+        _loadGuns();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadGuns() async {
@@ -77,6 +95,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   }
 
   Future<void> _refreshGuns() async {
+    offset = 0;
+    guns.clear();
     await _loadGuns();
   }
 
@@ -194,6 +214,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                           ),
                         );
                       },
+                      scrollController: _scrollController,
                     )
                   : Center(
                       child: Text(
