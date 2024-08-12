@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:gun_store/gun_model.dart';
+import 'package:gun_store/objects/produto-imagem.dart';
 
 class GunGrid extends StatelessWidget {
-  final List<Gun> guns;
-  final bool isLoading;
-  final void Function(Gun gun) onItemClick;
+  final List<ProdutoImagem> guns;
+  final void Function(ProdutoImagem gun) onItemClick;
+  final ScrollController scrollController;
+
   GunGrid({
     required this.guns,
-    required this.isLoading,
     required this.onItemClick,
+    required this.scrollController,
   });
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
+      controller: scrollController,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16,
@@ -22,7 +24,7 @@ class GunGrid extends StatelessWidget {
       ),
       itemCount: guns.length,
       itemBuilder: (context, index) {
-        final Gun gun = guns[index];
+        final ProdutoImagem gun = guns[index];
         return GestureDetector(
           onTap: () => onItemClick(gun),
           child: Container(
@@ -43,8 +45,8 @@ class GunGrid extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-                  child: Image.asset(
-                    gun.image,
+                  child: Image.network(
+                    gun.imagem,
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -53,23 +55,19 @@ class GunGrid extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 12.0, vertical: 8.0),
                   child: Text(
-                    gun.name,
+                    gun.nome,
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Divider(
-                    color: Colors.grey,
-                    thickness: 1,
-                  ),
+                  child: Divider(),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: Text(
-                    gun.description,
-                    style: TextStyle(fontSize: 15),
-                    maxLines: 3,
+                    gun.descricao,
+                    maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
