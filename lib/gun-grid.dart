@@ -9,13 +9,13 @@ class GunGrid extends StatelessWidget {
   GunGrid({
     required this.guns,
     required this.onItemClick,
-    required this.scrollController, // Adicionado o ScrollController
+    required this.scrollController,
   });
 
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      controller: scrollController, // Adicionado o controller
+      controller: scrollController,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
         crossAxisSpacing: 16,
