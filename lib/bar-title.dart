@@ -6,7 +6,7 @@ class BarTitle extends StatelessWidget {
     return Row(
       children: [
         Image.asset(
-          'assets/images/magnum_python.png',
+          'assets/image/magnum_python.png',
           scale: 8,
         ),
         const SizedBox(
