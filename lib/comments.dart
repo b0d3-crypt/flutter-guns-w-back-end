@@ -74,7 +74,7 @@ class _CommentsState extends State<Comments> {
   inserirComentario(ComentarioResponse comentario) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:3000/comentarios'),
+        Uri.parse('http://10.0.2.2:3000/comentarios'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

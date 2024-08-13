@@ -58,7 +58,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
       await Future.delayed(Duration(seconds: 1));
 
       final response = await http
-          .get(Uri.parse('http://localhost:3000/produtos/${offset}/${limit}'));
+          .get(Uri.parse('http://10.0.2.2:3000/produtos/${offset}/${limit}'));
       if (response.statusCode == 200) {
         print('Response body: ${response.body}');
 

@@ -34,7 +34,7 @@ class _GunsDetailsState extends State<GunsDetails> {
 
   Future<void> _fetchGunDetails() async {
     _checkIfLiked();
-    final url = 'http://localhost:3000/produtos/${widget.cdProduto}';
+    final url = 'http://10.0.2.2:3000/produtos/${widget.cdProduto}';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -78,7 +78,7 @@ class _GunsDetailsState extends State<GunsDetails> {
   sendLike(bool liked) async {
     try {
       final response = await http.put(
-        Uri.parse('http://localhost:3000/produto-like'),
+        Uri.parse('http://10.0.2.2:3000/produto-like'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -91,7 +91,7 @@ class _GunsDetailsState extends State<GunsDetails> {
       );
       if (liked) {
         final response = await http.post(
-          Uri.parse('http://localhost:3000/usuario-like'),
+          Uri.parse('http://10.0.2.2:3000/usuario-like'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
           },
@@ -101,7 +101,7 @@ class _GunsDetailsState extends State<GunsDetails> {
         );
       } else {
         final response = await http.delete(Uri.parse(
-            'http://localhost:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}'));
+            'http://10.0.2.2:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}'));
       }
       if (response.statusCode == 200) {
         setState(() {
@@ -126,7 +126,7 @@ class _GunsDetailsState extends State<GunsDetails> {
   Future<void> _checkIfLiked() async {
     try {
       final response = await http.get(Uri.parse(
-        'http://localhost:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}',
+        'http://10.0.2.2:3000/usuario-like/${widget.usuarioDTO.idUsuario}/${widget.cdProduto}',
       ));
       if (response.statusCode == 200) {
         setState(() {
